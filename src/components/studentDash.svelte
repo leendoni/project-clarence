@@ -10,7 +10,12 @@
 
 <br /><br /><br />
 
+<span>$lastName, $firstName $middleName</span>
+
+<br /><br /><br />
+
 <DataTable
+	zebra
 	size="medium"
 	headers={[
 		{ key: 'deptName', value: 'Department' },

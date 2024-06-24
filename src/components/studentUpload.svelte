@@ -36,19 +36,49 @@
 
 					// Generate username and password
 					const last6Digits = studentNumber.slice(-6);
-					const last3Digits = studentNumber.slice(-3);
-					const username = `${lastName}.${last6Digits}`;
-					const password = `${firstName}.${last3Digits}`;
+					const password = `${lastName}.${last6Digits}`;
+
+					// Extract optional fields with default values
+					const description = student['description'] || '';
+					const alumDescription = student['alumDescription'] || '';
+					const alumStatus = convertToBoolean(student['alumStatus']);
+					const deanDescription = student['deanDescription'] || '';
+					const deanStatus = convertToBoolean(student['deanStatus']);
+					const fincDescription = student['fincDescription'] || '';
+					const fincStatus = convertToBoolean(student['fincStatus']);
+					const guidDescription = student['guidDescription'] || '';
+					const guidStatus = convertToBoolean(student['guidStatus']);
+					const librDescription = student['librDescription'] || '';
+					const librStatus = convertToBoolean(student['librStatus']);
+					const osasDescription = student['osasDescription'] || '';
+					const osasStatus = convertToBoolean(student['osasStatus']);
+					const regsDescription = student['regsDescription'] || '';
+					const regsStatus = convertToBoolean(student['regsStatus']);
 
 					try {
 						await addDoc(collection(db, 'students'), {
-							accountType: accountType,
-							lastName: lastName,
-							firstName: firstName,
-							middleName: middleName,
-							studentNumber: studentNumber,
-							username: username,
-							password: password
+							accountType,
+							lastName,
+							firstName,
+							middleName,
+							studentNumber,
+							username: studentNumber,
+							password,
+							description,
+							alumDescription,
+							alumStatus,
+							deanDescription,
+							deanStatus,
+							fincDescription,
+							fincStatus,
+							guidDescription,
+							guidStatus,
+							librDescription,
+							librStatus,
+							osasDescription,
+							osasStatus,
+							regsDescription,
+							regsStatus
 						});
 
 						console.log(`Added student ${firstName} ${lastName} (${studentNumber}) successfully`);
@@ -64,7 +94,11 @@
 			}
 		});
 	};
+
+	const convertToBoolean = (value) => {
+		return value === 'true' || value === '1';
+	};
 </script>
 
-To import student data, load the CSV masterlist file here :
+To import student data, load the CSV masterlist file here:
 <input type="file" accept=".csv" on:change={handleFileUpload} />

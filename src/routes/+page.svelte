@@ -42,7 +42,7 @@
 	};
 </script>
 
-<Header company="Project" platformName="CLARENCE" bind:isSideNavOpen>
+<Header company="DEMO | Project" platformName="CLARENCE" bind:isSideNavOpen>
 	<svelte:fragment slot="skip-to-content">
 		<SkipToContent />
 	</svelte:fragment>
@@ -58,12 +58,18 @@
 
 <Content>
 	{#if currentUser}
-		{#if currentUser.accountType === 'admn'}
+		{#if currentUser.accountType == 'libr' || currentUser.accountType == 'alum' || currentUser.accountType == 'osas' || currentUser.accountType == 'guid' || currentUser.accountType == 'dean' || currentUser.accountType == 'finc' || currentUser.accountType == 'regs'}
 			<AdminDashboard />
-		{:else}
+		{:else if currentUser.accountType == 'stud'}
 			<StudentDashboard />
+		{:else}
+			Invalid credentials.
 		{/if}
 	{:else}
 		<Login />
+		<br /><br /><br />
+		<!-- <AdminUpload />
+		<br />
+		<StudentUpload /> -->
 	{/if}
 </Content>

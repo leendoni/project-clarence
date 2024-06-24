@@ -60,5 +60,5 @@
 	};
 </script>
 
-IMPORT ADMIN CREDENTIALS HERE:
+To import administrator data, load the CSV masterlist file here :
 <input type="file" accept=".csv" on:change={handleFileUpload} />

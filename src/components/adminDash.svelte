@@ -37,13 +37,23 @@
 	let currentUser = null;
 
 	const userFields = {
-		libr: { status: false, desc: '', label: "Librarian's Notes" },
-		alum: { status: false, desc: '', label: "Alumni Coordinator's Notes" },
-		osas: { status: false, desc: '', label: "Prefect of Discipline's Notes" },
-		guid: { status: false, desc: '', label: "Guidance Counselor's Notes" },
-		dean: { status: false, desc: '', label: "Dean / Academic Head's Notes" },
-		finc: { status: false, desc: '', label: "Finance Officer's Notes" },
-		regs: { status: false, desc: '', label: "Registrar's Notes" }
+		libr: { dept: 'Library', status: false, desc: '', label: "Librarian's Notes" },
+		alum: {
+			dept: 'Alumni & Placement',
+			status: false,
+			desc: '',
+			label: "Alumni Coordinator's Notes"
+		},
+		osas: { dept: 'OSAS / POD', status: false, desc: '', label: "Prefect of Discipline's Notes" },
+		guid: { dept: 'Guidance Office', status: false, desc: '', label: "Guidance Counselor's Notes" },
+		dean: {
+			dept: 'Dean / Academic Head',
+			status: false,
+			desc: '',
+			label: "Dean / Academic Head's Notes"
+		},
+		finc: { dept: 'Finance Office', status: false, desc: '', label: "Finance Officer's Notes" },
+		regs: { dept: 'Registrar', status: false, desc: '', label: "Registrar's Notes" }
 	};
 
 	const convertToBoolean = (value) => {
@@ -231,26 +241,30 @@
 	<Pagination bind:pageSize bind:page totalItems={rows.length} pageSizeInputDisabled />
 	<br /><br /><br />
 
-	{#if currentUser.accountType in userFields}
-		<Toggle
-			bind:toggled={userFields[currentUser.accountType].status}
-			disabled={!isEditing}
-			labelText="Student Status"
-			labelA="Incomplete"
-			labelB="Complete"
-		/>
-	{:else if currentUser.accountType == 'regs'}
-		{#each Object.keys(userFields) as key}
+	{#if currentUser}
+		{#if currentUser.accountType in userFields}
 			<Toggle
-				bind:toggled={userFields[key].status}
-				disabled
+				bind:toggled={userFields[currentUser.accountType].status}
+				disabled={!isEditing}
 				labelText="Student Status"
 				labelA="Incomplete"
 				labelB="Complete"
 			/>
-		{/each}
-	{:else}
-		No user.
+		{:else}
+			No user.
+		{/if}
+
+		{#if currentUser.accountType === 'regs'}
+			{#each Object.keys(userFields) as key}
+				<Toggle
+					bind:toggled={userFields[key].status}
+					disabled={!isEditing}
+					labelText={`Student Status - ${userFields[key].dept}`}
+					labelA="Incomplete"
+					labelB="Complete"
+				/>
+			{/each}
+		{:else}{/if}
 	{/if}
 
 	<br />
@@ -269,7 +283,7 @@
 			bind:value={userFields[currentUser.accountType].desc}
 			maxCount={150}
 		/>
-	{:else if currentUser.accountType == 'regs'}
+	{:else if currentUser.accountType === 'regs'}
 		{#each Object.keys(userFields) as key}
 			<TextArea
 				readonly={!isEditing}
